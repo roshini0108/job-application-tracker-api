@@ -31,6 +31,9 @@ function checkLogin(req, res, next) {
 app.post('/applications', checkLogin, (req, res) => {
 
     const { companyName, role, status } = req.body;
+    if (!companyName || !role || !status) {
+        return res.send('All fields are required');
+    }
 
     const newApplication = {
         companyName,
@@ -65,6 +68,10 @@ app.put('/applications/:id', checkLogin, (req, res) => {
 
     res.send('Application updated successfully');
 
+});
+// Global Error Handler Middleware
+app.use((err, req, res, next) => {
+    res.status(500).send('Something went wrong');
 });
 
 // Start server
